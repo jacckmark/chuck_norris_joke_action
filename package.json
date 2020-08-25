@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/jacckmark/chuck_norris_joke_action#readme",
   "dependencies": {
-    "axios": "^0.19.2"
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0",
+    "axios": "^0.19.2",
+    "nodemailer": "^6.4.11"
   }
 }
