@@ -1,13 +1,13 @@
 name: "Chuck Joke"
 description: "A Github Action, to send chuck jokes on every push."
 inputs:
-  sendingEmailAddress:
+  sending-email-address:
     description:"sending user email address"
      required: true
-  sendingEmailPass:
+  sending-email-pass:
     description:"sending user email password"
     required: true
-  receivingEmailAddress:
+  receiving-email-address:
     description:"receiving user email password"
     required: true
 runs:
