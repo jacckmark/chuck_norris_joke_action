@@ -3,14 +3,13 @@ description: "A Github Action, to send chuck jokes on every push."
 inputs:
   sendingEmailAddress:
     description:"sending user email address"
-    required: true
+     required: true
   sendingEmailPass:
     description:"sending user email password"
     required: true
   receivingEmailAddress:
     description:"receiving user email password"
     required: true
-  
 runs:
   using: "node12"
   main: "index.js"
