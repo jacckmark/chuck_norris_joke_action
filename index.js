@@ -37,7 +37,7 @@ function prepareHeaders(apiToken) {
     }
 }
 
-function replaceGithubComments(translateApiToken, githubToken) {
+async function replaceGithubComments(translateApiToken, githubToken) {
     const octokit = github.getOctokit(githubToken);
     if (eventName === 'issue_comment' || eventName === 'pull_request_review_comment') {
         const comment = payload.comment.body;
