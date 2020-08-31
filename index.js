@@ -5,7 +5,7 @@ const axios = require('axios').default;
 async function run() {
     const githubAccessToken = core.getInput("githubAccessToken");
     const translationApiToken = core.getInput("translationApiToken");
-    await replaceGithubComments(translationApiToken, githubAccessToken);
+    const result = await replaceGithubComments(translationApiToken, githubAccessToken);
 }
 
 async function getYodaTranslation(textToTranslate, translationApiToken) {
