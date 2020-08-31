@@ -25,14 +25,14 @@ async function replaceGithubComments(translateApiToken, githubToken) {
     const octokit = github.getOctokit(githubToken);
     if (eventName === 'issue_comment' || eventName === 'pull_request_review_comment') {
         // console.log(payload);
-        const comment = payload.comment.body;
+        const comment = `${payload.comment.body}XXXXXX`;
         console.log('111111111111111111111111111111111111111111111111111111');
         console.log(payload.comment);
         const result = await getYodaTranslation(comment, translateApiToken);
         console.log('222222222222222222222222222222222222222222222222222222');
         console.log(result);
         octokit.issues
-            .updateComment({ ...repo, comment_id: payload.comment.id, result })
+            .updateComment({ ...repo, comment_id: payload.comment.id, comment })
             .then(() => core.info("Translated comment to yodish..."))
             .catch((error) => core.error(error));
     }
