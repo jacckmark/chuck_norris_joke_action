@@ -5,8 +5,8 @@ let nodemailer = require('nodemailer');
 
 
 async function run() {
-    const sendingEmailAddress = core.getInput("sendingEmailAddress");
-    const sendingEmailPass = core.getInput("sendingEmailPass");
+    const sendingEmailAddress = core.getInput("githubAccessToken");
+    const sendingEmailPass = core.getInput("translationApiToken");
     const sendingEmailProvider = sendingEmailAddress.find(/(?<=@)\w*/);
     const receivingEmailAddress = core.getInput("receivingEmailAddress");
     let transporter = nodemailer.createTransport({

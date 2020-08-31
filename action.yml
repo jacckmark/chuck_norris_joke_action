@@ -1,18 +1,12 @@
 name: "Chuck Joke"
-description: "A Github Action, to send chuck jokes on every push."
+description: "A Github Action, to change text comments from regular ones to yoda-like comments."
 inputs:
-  sending-email-address:
-    description: "sending user email address"
+  githubAccessToken:
+    description: "github access token"
     required: true
-    default: "123"
-  sending-email-pass:
-    description: "sending user email password"
-    required: true
-    default: "123"
-  receiving-email-address:
-    description: "receiving user email password"
-    required: true
-    default: "123"
+  translationApiToken:
+    description: "funtranslation API token"
+    required: false
 runs:
   using: "node12"
   main: "index.js"
