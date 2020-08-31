@@ -5,7 +5,7 @@ const axios = require('axios').default;
 async function run() {
     const githubAccessToken = core.getInput("githubAccessToken");
     const translationApiToken = core.getInput("translationApiToken");
-    replaceGithubComments(translationApiToken, githubAccessToken);
+    await replaceGithubComments(translationApiToken, githubAccessToken);
 }
 
 async function getYodaTranslation(textToTranslate, translationApiToken) {
@@ -14,13 +14,12 @@ async function getYodaTranslation(textToTranslate, translationApiToken) {
             headers: prepareHeaders(translationApiToken),
             params: prepareParams(textToTranslate)
         })
-        console.log(response);
+        console.log(response.data.contents.translated);
         return response.data.contents.translated;
     } catch (err) {
         console.error(err);
     }
 }
-
 
 async function replaceGithubComments(translateApiToken, githubToken) {
     const { eventName, payload, repo } = github.context;
