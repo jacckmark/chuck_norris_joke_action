@@ -27,6 +27,7 @@ async function replaceGithubComments(translateApiToken, githubToken) {
         // console.log(payload);
         const comment = payload.comment.body;
         console.log('111111111111111111111111111111111111111111111111111111');
+        console.log(payload.comment);
         const result = await getYodaTranslation(comment, translateApiToken);
         console.log('222222222222222222222222222222222222222222222222222222');
         console.log(result);
