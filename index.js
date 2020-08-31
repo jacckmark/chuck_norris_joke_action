@@ -38,7 +38,7 @@ function prepareHeaders(apiToken) {
 async function replaceGithubComments(translateApiToken, githubToken) {
     const octokit = github.getOctokit(githubToken);
     if (eventName === 'issue_comment' || eventName === 'pull_request_review_comment') {
-        console.log(payload);
+        // console.log(payload);
         const comment = payload.comment.body;
         const result = await getYodaTranslation(comment, translateApiToken);
         console.log(result);
