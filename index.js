@@ -11,8 +11,9 @@ async function run() {
 
 async function getYodaTranslation(textToTranslate, translationApiToken) {
     try {
-        const response = await axios.get(`https://api.funtranslations.com/translate/yoda.json${prepareParams(textToTranslate)}`, {
-            headers: prepareHeaders(translationApiToken)
+        const response = await axios.get(`https://api.funtranslations.com/translate/yoda.json`, {
+            headers: prepareHeaders(translationApiToken),
+            params: prepareParams(textToTranslate)
         })
         return response.data;
     } catch (err) {
@@ -21,12 +22,9 @@ async function getYodaTranslation(textToTranslate, translationApiToken) {
 }
 
 function prepareParams(textToTranslate) {
-    let urlSearchParams = new URLSearchParams();
-
     if (textToTranslate) {
-        urlSearchParams.append('text', textToTranslate);
+        return { 'text': textToTranslate };
     }
-    return `?${urlSearchParams.toString()}`
 }
 
 function prepareHeaders(apiToken) {
