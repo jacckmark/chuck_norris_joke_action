@@ -14,7 +14,6 @@ async function getYodaTranslation(textToTranslate, translationApiToken) {
             headers: prepareHeaders(translationApiToken),
             params: prepareParams(textToTranslate)
         })
-        console.log(response.data.contents.translated);
         return response.data.contents.translated;
     } catch (err) {
         console.error(err);
@@ -32,7 +31,7 @@ async function replaceGithubComments(translateApiToken, githubToken) {
         console.log('222222222222222222222222222222222222222222222222222222');
         console.log(result);
         octokit.issues
-            .updateComment({ ...repo, comment_id: payload.comment.id, comment })
+            .updateComment({ ...repo, comment_id: payload.comment.id, result })
             .then(() => core.info("Translated comment to yodish..."))
             .catch((error) => core.error(error));
     }
