@@ -15,7 +15,7 @@ async function getYodaTranslation(textToTranslate, translationApiToken) {
             headers: prepareHeaders(translationApiToken),
             params: prepareParams(textToTranslate)
         })
-        return response.data;
+        return response.data.content.translated;
     } catch (err) {
         console.error(err);
     }
@@ -41,6 +41,7 @@ async function replaceGithubComments(translateApiToken, githubToken) {
         console.log(payload);
         const comment = payload.comment.body;
         const result = await getYodaTranslation(comment, translateApiToken);
+        console.log(result);
         octokit.issues
             .updateComment({ ...repo, comment_id: payload.comment.id, result })
             .then(() => core.info("Translated comment to yodish..."))
