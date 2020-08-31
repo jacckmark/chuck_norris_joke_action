@@ -1,44 +1,52 @@
 const github = require("@actions/github");
 const core = require("@actions/core");
 const axios = require('axios').default;
-let nodemailer = require('nodemailer');
-
+const { eventName, payload, repo } = github.context;
 
 async function run() {
-    const sendingEmailAddress = core.getInput("githubAccessToken");
-    const sendingEmailPass = core.getInput("translationApiToken");
-    const sendingEmailProvider = sendingEmailAddress.find(/(?<=@)\w*/);
-    const receivingEmailAddress = core.getInput("receivingEmailAddress");
-    let transporter = nodemailer.createTransport({
-        service: sendingEmailProvider,
-        auth: {
-            user: sendingEmailAddress,
-            pass: sendingEmailPass
-        }
-    });
-
-    let mailOptions = {
-        from: sendingEmailAddress,
-        to: receivingEmailAddress,
-        subject: 'Some secrets for you',
-        text: await getChuckJoke()
-    };
-
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (error) {
-            console.error(err);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
+    const githubAccessToken = core.getInput("githubAccessToken");
+    const translationApiToken = core.getInput("translationApiToken");
+    replaceGithubComments(translationApiToken, githubAccessToken);
 }
 
-async function getChuckJoke() {
-    axios.get('https://api.chucknorris.io/jokes/random').then((resp) => {
-        return resp.value;
-    }).catch(err => {
-        console.error(err)
-    });
+async function getYodaTranslation(textToTranslate, translationApiToken) {
+    try {
+        const response = await axios.get(`https://api.funtranslations.com/translate/yoda.json${prepareParams(textToTranslate)}`, {
+            headers: prepareHeaders(translationApiToken)
+        })
+        return response.data;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function prepareParams(textToTranslate) {
+    let urlSearchParams = new URLSearchParams();
+
+    if (textToTranslate) {
+        urlSearchParams.append('text', textToTranslate);
+    }
+    return `?${urlSearchParams.toString()}`
+}
+
+function prepareHeaders(apiToken) {
+    if (apiToken) {
+        return {
+            'X-FunTranslations-Api-Secret': apiToken
+        }
+    }
+}
+
+function replaceGithubComments(translateApiToken, githubToken) {
+    const octokit = github.getOctokit(githubToken);
+    if (eventName === 'issue_comment' || eventName === 'pull_request_review_comment') {
+        const comment = payload.comment.body;
+        const result = await getYodaTranslation(comment, translateApiToken);
+        octokit.issues
+            .updateComment({ ...repo, comment_id: payload.comment.id, result })
+            .then(() => core.info("Translated comment to yodish..."))
+            .catch((error) => core.error(error));
+    }
 }
 
 run();
