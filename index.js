@@ -21,6 +21,21 @@ async function getYodaTranslation(textToTranslate, translationApiToken) {
     }
 }
 
+
+async function replaceGithubComments(translateApiToken, githubToken) {
+    const octokit = github.getOctokit(githubToken);
+    if (eventName === 'issue_comment' || eventName === 'pull_request_review_comment') {
+        // console.log(payload);
+        const comment = payload.comment.body;
+        const result = await getYodaTranslation(comment, translateApiToken);
+        console.log(result);
+        octokit.issues
+            .updateComment({ ...repo, comment_id: payload.comment.id, comment })
+            .then(() => core.info("Translated comment to yodish..."))
+            .catch((error) => core.error(error));
+    }
+}
+
 function prepareParams(textToTranslate) {
     if (textToTranslate) {
         return { 'text': textToTranslate };
@@ -32,20 +47,6 @@ function prepareHeaders(apiToken) {
         return {
             'X-FunTranslations-Api-Secret': apiToken
         }
-    }
-}
-
-async function replaceGithubComments(translateApiToken, githubToken) {
-    const octokit = github.getOctokit(githubToken);
-    if (eventName === 'issue_comment' || eventName === 'pull_request_review_comment') {
-        // console.log(payload);
-        const comment = payload.comment.body;
-        const result = await getYodaTranslation(comment, translateApiToken);
-        console.log(result);
-        octokit.issues
-            .updateComment({ ...repo, comment_id: payload.comment.id, 'dupa' })
-            .then(() => core.info("Translated comment to yodish..."))
-            .catch((error) => core.error(error));
     }
 }
 
