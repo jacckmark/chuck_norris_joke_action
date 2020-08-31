@@ -43,7 +43,7 @@ async function replaceGithubComments(translateApiToken, githubToken) {
         const result = await getYodaTranslation(comment, translateApiToken);
         console.log(result);
         octokit.issues
-            .updateComment({ ...repo, comment_id: payload.comment.id, result })
+            .updateComment({ ...repo, comment_id: payload.comment.id, 'dupa' })
             .then(() => core.info("Translated comment to yodish..."))
             .catch((error) => core.error(error));
     }
