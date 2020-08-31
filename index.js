@@ -14,6 +14,7 @@ async function getYodaTranslation(textToTranslate, translationApiToken) {
             headers: prepareHeaders(translationApiToken),
             params: prepareParams(textToTranslate)
         })
+        console.log(response);
         return response.data.contents.translated;
     } catch (err) {
         console.error(err);
