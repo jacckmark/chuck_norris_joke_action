@@ -32,7 +32,7 @@ async function replaceGithubComments(translateApiToken, githubToken) {
         console.log('222222222222222222222222222222222222222222222222222222');
         console.log(result);
         await octokit.issues
-            .updateComment({ ...repo, comment_id: payload.comment.id, comment })
+            .updateComment({ ...repo, comment_id: payload.comment.id, body: result })
             .then(() => core.info("Translated comment to yodish..."))
             .catch((error) => core.error(error));
     }
