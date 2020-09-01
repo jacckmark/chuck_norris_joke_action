@@ -26,10 +26,14 @@ async function replaceGithubComments(translateApiToken, githubToken) {
     if (eventName === 'issue_comment' || eventName === 'pull_request_review_comment') {
         const comment = payload.comment.body;
         const result = await getYodaTranslation(comment, translateApiToken);
-        await octokit.issues
-            .updateComment({ ...repo, comment_id: payload.comment.id, body: result })
-            .then(() => core.info("Translated comment to yodish..."))
-            .catch((error) => core.error(error));
+        if (result) {
+            await octokit.issues
+                .updateComment({ ...repo, comment_id: payload.comment.id, body: `[translated from english, to yodish]:\n${result}` })
+                .then(() => core.info("Translated comment to yodish..."))
+                .catch((error) => core.error(error));
+        } else {
+            core.info(`There was no translation downloaded. Probably you exceeded the limits of a free version or your API key is not correct...`)
+        }
     }
 }
 
